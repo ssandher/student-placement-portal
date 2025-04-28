@@ -1,0 +1,11 @@
+.container{
+    /* width :${Width}; */
+    height: 100vW;
+}
+
+.containerHeader{
+    display: flex;
+    align-items: center;
+    border: 1px solid #6366f1;
+    border-radius: 10px;
+}
