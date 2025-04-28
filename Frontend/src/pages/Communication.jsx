@@ -8,6 +8,7 @@ import axios from 'axios';
 import { InputText } from 'primereact/inputtext';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
+import '../pages/Communication.css'; // Import the CSS file
 
 const Communication = () => {
     const [studentStatus, setStudentStatus] = useState(null);
@@ -192,7 +193,7 @@ const Communication = () => {
     };
 
     const header = (
-        <div className="table-header">
+        <div className="communication-table-header">
             <h2>{statusOptions.find(opt => opt.value === studentStatus)?.label || 'Students'}</h2>
             <span className="p-input-icon-left">
                 <IconField iconPosition="left">
@@ -205,9 +206,9 @@ const Communication = () => {
 
 
     return (
-        <div>
+        <div className="communication-page card">
             <h2>Communication with Students</h2>
-            <div>
+            <div className="communication-dropdown-container">
                 <Dropdown
                     value={studentStatus}
                     options={statusOptions}
@@ -217,11 +218,11 @@ const Communication = () => {
                         setSelectedStudents([]);
                     }}
                     placeholder="Select Student Status"
-                    style={{ width: '300px', marginBottom: '20px' }}
+                    className="communication-dropdown"
                 />
             </div>
 
-            <Button label="Send Email to Selected" icon="pi pi-envelope" onClick={sendEmail} disabled={selectedStudents.length === 0} style={{ marginBottom: '20px' }} />
+            <Button label="Send Email to Selected" icon="pi pi-envelope" onClick={sendEmail} disabled={selectedStudents.length === 0} className="communication-send-email-button" />
 
             {filteredStudents.length > 0 && (
                 <DataTable
@@ -236,20 +237,21 @@ const Communication = () => {
                     dataKey="student_id"
                     emptyMessage="No students found."
                     responsiveLayout="scroll"
+                    className="communication-datatable"
                 >
                     <Column selectionMode="multiple" headerStyle={{ width: '3em' }} />
                     <Column field="name" header="Name" filter filterPlaceholder="Search by name" />
-                    <Column field="rollNumber" header="Roll Number" filter filterPlaceholder="Search by roll number" />
+                    <Column field="rollNumber" header="Roll Number" filter filterPlaceholder="Search by roll number" style={{ minWidth: '150px' }}/>
                     <Column field="college_email" header="College Email" filter filterPlaceholder="Search by college email" />
-                    <Column field="phone_number" header="Phone Number" filter filterPlaceholder="Search by phone number" />
+                    <Column field="phone_number" header="Phone Number" filter filterPlaceholder="Search by phone number" style={{ minWidth: '175px' }}/>
                     <Column header="School" body={(rowData) => rowData.school?.school_name || 'N/A'} filterField="school.school_name" filter filterPlaceholder="Search by school" />
                     <Column header="Department" body={(rowData) => rowData.department?.dep_name || 'N/A'} filterField="department.dep_name" filter filterPlaceholder="Search by department" />
-                    <Column field="placementStatus" header="Placement Status" /> {/* Display the dynamic placementStatus */}
-                    <Column field="year_of_study" header="Year of Study" filter filterPlaceholder="Search by year" />
-                    <Column field="cpi_after_7th_sem" header="CPI After 7th Sem" filter filterPlaceholder="Search by CPI" />
-                    <Column field="no_of_backlog" header="No. of Backlogs" filter filterPlaceholder="Search by backlogs" />
-                    <Column field="no_of_active_backlog" header="No. of Active Backlogs" filter filterPlaceholder="Search by active backlogs" />
-                    <Column field="optout" header="Opt-Out" body={(rowData) => rowData.optout === 1 ? 'Yes' : 'No'} filter filterPlaceholder="Search by opt-out status" />
+                    <Column field="placementStatus" header="Placement Status" style={{ minWidth: '170px' }}/> {/* Display the dynamic placementStatus */}
+                    <Column field="year_of_study" header="Year of Study" filter filterPlaceholder="Search by year" style={{ minWidth: '170px' }}/>
+                    <Column field="cpi_after_7th_sem" header="CPI After 7th Sem" filter filterPlaceholder="Search by CPI" style={{ minWidth: '200px' }}/>
+                    <Column field="no_of_backlog" header="No. of Backlogs" filter filterPlaceholder="Search by backlogs" style={{ minWidth: '200px' }}/>
+                    <Column field="no_of_active_backlog" header="No. of Active Backlogs" filter filterPlaceholder="Search by active backlogs" style={{ minWidth: '200px' }}/>
+                    <Column field="optout" header="Opt-Out" body={(rowData) => rowData.optout === 1 ? 'Yes' : 'No'} filter filterPlaceholder="Search by opt-out status" style={{ minWidth: '150px' }}/>
                     {studentStatus === 'placed' && (
                         <>
                             <Column field="company_name" header="Company Name" filter filterPlaceholder="Search by company" />

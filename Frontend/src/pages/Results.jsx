@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import "./Results.css"; // Ensure you create a Results.css file
 
 const Results = () => {
     const [companies, setCompanies] = useState([]);
@@ -214,7 +215,7 @@ const Results = () => {
 
     const renderRoundStudentsTable = () => {
         return (
-            <DataTable value={studentsInRound} responsiveLayout="scroll">
+            <DataTable value={studentsInRound} responsiveLayout="scroll" className="results-datatable">
                 <Column field="name" header="Name" />
                 <Column field="rollNumber" header="Roll Number" />
                 <Column
@@ -240,7 +241,7 @@ const Results = () => {
 
     const renderPlacedStudentsTable = () => {
         return (
-            <DataTable value={placedStudents} responsiveLayout="scroll">
+            <DataTable value={placedStudents} responsiveLayout="scroll" className="results-datatable">
                 <Column field="student_name" header="Name" />
                 <Column field="rollNumber" header="Roll Number" />
                 <Column field="position" header="Position" />
@@ -255,10 +256,10 @@ const Results = () => {
 
 
     return (
-        <div className="card">
+        <div className="results-page card">
             <h1>Results Page</h1>
 
-            <div className="mb-4">
+            <div className="results-dropdown mb-4">
                 <label htmlFor="companyDropdown" className="block text-900 text-xl font-medium mb-2">
                     Select Company
                 </label>
@@ -267,7 +268,7 @@ const Results = () => {
 
             {selectedCompany && (
                 <div>
-                    <div className="mb-4">
+                    <div className="results-dropdown mb-4">
                         <label htmlFor="roundDropdown" className="block text-900 text-xl font-medium mb-2">
                             View Students in Round
                         </label>
@@ -279,7 +280,7 @@ const Results = () => {
                         </div>
                     </div>
 
-                    <div className="mb-4">
+                    <div className="results-button-container mb-4">
                         <label htmlFor="placedStudents" className="block text-900 text-xl font-medium mb-2">
                             View Placed Students
                         </label>

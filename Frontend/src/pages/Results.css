@@ -1,0 +1,88 @@
+/* src/pages/Results.css */
+
+.results-page.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+.results-page h1 {
+    margin: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.results-dropdown {
+    margin-bottom: 20px;
+}
+
+.results-dropdown label {
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.results-button-container {
+    margin-bottom: 20px;
+}
+
+.results-button-container label {
+    display: block;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.results-datatable .p-datatable-header {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.results-datatable .p-datatable-tbody > tr {
+    transition: background-color 0.3s ease;
+}
+
+.results-datatable .p-datatable-tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.results-datatable .p-datatable-tbody > tr:hover {
+    background-color: #e9e9e9;
+}
+
+.results-datatable .p-datatable-tbody > tr > td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+    background-color: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    padding: 12px;
+}
+
+
+.results-datatable .p-paginator {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}

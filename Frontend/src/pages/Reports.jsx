@@ -173,6 +173,7 @@ import { Card } from "primereact/card";
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Message } from 'primereact/message';
 import { Container, Grid } from "@mui/material"; // Using MUI Grid
+import "./PlacementReport.css"; // Import custom CSS
 
 // Default empty chart data structures
 const emptyPieData = { labels: [], datasets: [{ data: [], backgroundColor: [], hoverBackgroundColor: [] }] };
@@ -214,10 +215,10 @@ const PlacementReport = () => {
                     axios.get("http://localhost:3000/api/placement/getPlacedDepartmentWise", { headers })
                 ]);
 
-                console.log('API - All Placements:', placementsRes.data);
-                console.log('API - Core/Non-Core:', coreRes.data);
-                console.log('API - Year-Wise:', yearRes.data);
-                console.log('API - Department-Wise:', deptRes.data);
+                // console.log('API - All Placements:', placementsRes.data);
+                // console.log('API - Core/Non-Core:', coreRes.data);
+                // console.log('API - Year-Wise:', yearRes.data);
+                // console.log('API - Department-Wise:', deptRes.data);
 
                 // Validate and set state
                 setAllPlacements(Array.isArray(placementsRes.data) ? placementsRes.data : []);
@@ -307,77 +308,86 @@ const PlacementReport = () => {
     }
 
     return (
-        // Using MUI Container and Grid for layout consistency
-        <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-                {/* Placement Details Table */}
-                <Grid item xs={12}>
-                    <Card title=" Student Placement Details" className="shadow-2 border-round">
-                        <DataTable value={allPlacements} paginator rows={10} emptyMessage="No placement details found." responsiveLayout="scroll">
-                            {/* Use field names confirmed from backend getAllDetails */}
-                            <Column field="student_name" header="Student Name" sortable filter filterPlaceholder="Search"/>
-                            <Column field="company_name" header="Company Name" sortable filter filterPlaceholder="Search"/>
-                            <Column field="position" header="Position" sortable />
-                            <Column field="salary" header="Salary (INR)" sortable body={(rowData) => rowData.salary ? parseFloat(rowData.salary).toLocaleString('en-IN', { maximumFractionDigits: 0 }) : 'N/A'}/>
-                            <Column field="placement_date" header="Placement Date" sortable />
-                            <Column field="location" header="Location" sortable filter filterPlaceholder="Search"/>
-                            <Column field="core_non_core" header="Domain" sortable filter filterPlaceholder="Search"/>
-                        </DataTable>
-                    </Card>
-                </Grid>
-
-                {/* Core vs Non-Core Chart */}
-                <Grid item xs={12} md={6} lg={4}> {/* Adjust grid sizing */}
-                    <Card title="Core vs Non-Core" className="shadow-2 border-round" style={{ height: '450px' }}>
-                        {coreNonCoreData.length > 0 ? (
-                            <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
-                                <Chart type="pie" data={coreChartData} options={{ maintainAspectRatio: false, responsive: true }} style={{width: '90%', height: '85%'}}/>
-                            </div>
-                        ) : (
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                                <Message severity="info" text="No Core/Non-Core data available." />
-                            </div>
-                        )}
-                    </Card>
-                </Grid>
-
-                {/* Year-Wise Placement Bar Chart */}
-                <Grid item xs={12} md={6} lg={4}> {/* Adjust grid sizing */}
-                    <Card title="Placements by Year" className="shadow-2 border-round" style={{ height: '450px' }}>
-                        {yearWiseData.length > 0 ? (
-                            <div style={{ height: '100%', padding: '1rem' }}>
-                                <Chart type="bar" data={yearChartData} options={yearWiseChartOptions} style={{ width: '100%', height: '95%' }}/>
-                            </div>
-                        ) : (
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                                <Message severity="info" text="No Year-Wise data available." />
-                            </div>
-                        )}
-                    </Card>
-                </Grid>
-
-                {/* Department-Wise Placement Data */}
-                 <Grid item xs={12} lg={4}> {/* Adjust grid sizing */}
-                    <Card title="Placements by Department" className="shadow-2 border-round" style={{ height: '450px' }}>
-                        {departmentWiseData.length > 0 ? (
-                            <DataTable value={departmentWiseData} scrollable scrollHeight="380px" emptyMessage="No department data found.">
-                                <Column field="department" header="Department" sortable />
-                                <Column field="placed_students" header="Placed" sortable />
+        <div className="placement-report-page">
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4, ml: 0, pl: 0, pr: 0 }}> {/* ml: 0 removes left margin, pl: 0 and pr: 0 remove padding */}
+                <Grid container spacing={3}>
+                    {/* Placement Details Table */}
+                    <Grid item xs={12}>
+                        <Card title=" Student Placement Details" className="shadow-2 border-round" style={{ width: '100%' }}>
+                            <DataTable value={allPlacements} paginator rows={10} emptyMessage="No placement details found." responsiveLayout="scroll"
+                                className="p-datatable-sm" // Add this class for similar styling
+                                scrollable
+                                scrollHeight="400px" // Adjusted to match Reports.jsx
+                                stripedRows>
+                                {/* Use field names confirmed from backend getAllDetails */}
+                                <Column field="student_name" header="Student Name" sortable filter filterPlaceholder="Search" />
+                                <Column field="company_name" header="Company Name" sortable filter filterPlaceholder="Search" />
+                                <Column field="position" header="Position" sortable />
+                                <Column field="salary" header="Salary (INR)" sortable body={(rowData) => rowData.salary ? parseFloat(rowData.salary).toLocaleString('en-IN', { maximumFractionDigits: 0 }) : 'N/A'} />
+                                <Column field="placement_date" header="Placement Date" sortable />
+                                <Column field="location" header="Location" sortable filter filterPlaceholder="Search" />
+                                <Column field="core_non_core" header="Domain" sortable filter filterPlaceholder="Search" />
                             </DataTable>
-                        ) : (
-                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                                <Message severity="info" text="No Department-Wise data available." />
-                            </div>
-                        )}
-                    </Card>
+                        </Card>
+                    </Grid>
+
+                    {/* Core vs Non-Core Chart */}
+                    <Grid item xs={12} md={6} lg={6}>
+                        {/* Adjust grid sizing */}
+                        <Card title="Core vs Non-Core" className="shadow-2 border-round" style={{ height: '450px', width: '100%' }}>
+                            {coreNonCoreData.length > 0 ? (
+                                <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
+                                    <Chart type="pie" data={coreChartData} options={{ maintainAspectRatio: false, responsive: true }} style={{ width: '90%', height: '85%' }} />
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                    <Message severity="info" text="No Core/Non-Core data available." />
+                                </div>
+                            )}
+                        </Card>
+                    </Grid>
+
+                    {/* Year-Wise Placement Bar Chart */}
+                    <Grid item xs={12} md={6} lg={6}>
+                        {/* Adjust grid sizing */}
+                        <Card title="Placements by Year" className="shadow-2 border-round" style={{ height: '450px', width: '100%' }}>
+                            {yearWiseData.length > 0 ? (
+                                <div style={{ height: '100%', padding: '1rem' }}>
+                                    <Chart type="bar" data={yearChartData} options={yearWiseChartOptions} style={{ width: '100%', height: '95%' }} />
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                    <Message severity="info" text="No Year-Wise data available." />
+                                </div>
+                            )}
+                        </Card>
+                    </Grid>
+
+                    {/* Department-Wise Placement Data */}
+                    <Grid item xs={12} lg={12}>
+                        {/* Adjust grid sizing */}
+                        <Card title="Placements by Department" className="shadow-2 border-round" style={{ height: '450px', width: '100%' }}>
+                            {departmentWiseData.length > 0 ? (
+                                <DataTable value={departmentWiseData} scrollable scrollHeight="380px" emptyMessage="No department data found."
+                                    className="p-datatable-sm"
+                                    stripedRows>
+                                    <Column field="department" header="Department" sortable />
+                                    <Column field="placed_students" header="Placed" sortable />
+                                </DataTable>
+                            ) : (
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                                    <Message severity="info" text="No Department-Wise data available." />
+                                </div>
+                            )}
+                        </Card>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Container>
+            </Container>
+        </div>
     );
 };
 
 export default PlacementReport;
-
 
 // original code
 

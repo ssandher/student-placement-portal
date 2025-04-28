@@ -1,186 +1,243 @@
-/* Students.css */
 .students-page {
-    
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
-    padding: 1rem 1rem; /* Outer padding for the grey box */
+    background-color: #fff; /* Light grey background for the page */
     font-family: 'Roboto', sans-serif;
 }
 
-.card {
+.students-page .card {
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    margin-bottom: 2rem; /* Margin for spacing between cards */
-    padding: 1.5rem; /* Internal padding for the white box */
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.table-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1.5rem; /* Margin for spacing */
-}
-
-h2 {
-    margin: 0 0 1.5rem 0;
+.students-page .card .manage-students-header {
+    margin: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
     font-size: 1.8rem;
     color: #333;
     font-weight: 500;
 }
 
-.search-filter-container {
+.students-page .table-header {
     display: flex;
-    gap: 1rem;
-    align-items: center;
-    width: 40%; /* Updated width */
-    background-color: #f8f9fa;
-    padding: 1rem;
-    border-radius: 4px;
+    flex-direction: column; /* Changed to column to stack header and controls */
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
-.search-input-wrapper {
+.students-page .table-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    font-weight: 500;
+}
+
+.students-page .search-filter-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+}
+
+.students-page .search-input-wrapper {
     position: relative;
     flex-grow: 1;
-    margin-right: 1rem;
-    width: 40% !important; /* Ensure the width is applied */
 }
 
-.search-input {
-    width: 40%;
+.students-page .search-input {
+    width: 100%;
 }
 
-.search-input .p-inputtext {
-    width: 40%;
-    padding: 0.75rem 2.5rem 0.75rem 1rem;
+.students-page .search-input .p-inputtext {
+    width: 100%;
+    padding: 10px 35px 10px 15px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.search-input .p-inputtext:focus {
-    outline: none;
-    border-color: #2196F3;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+.students-page .search-input .p-inputtext:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: 0;
 }
 
-.search-icon {
+.students-page .search-icon {
     position: absolute;
-    right: 0.75rem;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: #6c757d;
 }
 
-.filter-button {
+.students-page .filter-button {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1rem;
+    padding: 10px 15px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     background-color: #ffffff;
     color: #495057;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
 }
 
-.filter-button:hover {
-    background-color: #f8f9fa;
+.students-page .filter-button:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
 }
 
-.filter-button i {
-    margin-right: 0.5rem;
+.students-page .filter-button i {
+    margin-right: 8px;
 }
 
-.action-buttons {
+/* .students-page .action-buttons {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 1rem; /* Margin for spacing */
+    gap: 10px;
+    margin-top: 20px;
+} */
+
+.students-page .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-right: 20px; /* Add margin to separate from search bar */
+    height: 43px;
+    width: 900px;
 }
 
-.action-buttons .p-button {
-    padding: 0.75rem 1.5rem;
+.students-page .action-buttons .p-button {
+    padding: 10px 15px;
     font-size: 1rem;
     border-radius: 4px;
-    transition: all 0.3s ease;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.students-page .action-buttons .p-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(var(--p-button-focus-shadow-color), .5);
+    outline: 0;
+}
+
+.students-page .action-buttons .p-button-outlined.p-button-success {
+    color: #28a745;
+    border-color: #28a745;
     background-color: transparent;
 }
 
-.action-buttons .p-button:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+.students-page .action-buttons .p-button-outlined.p-button-success:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
 }
 
-.action-buttons .p-button.p-button-success {
-    border-color: #22c55e;
-    color: #0e0e0e;
+.students-page .action-buttons .p-button-outlined.p-button-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+    background-color: transparent;
 }
 
-.action-buttons .p-button.p-button-danger {
-    border-color: #ef4444;
-    color: #ef4444;
+.students-page .action-buttons .p-button-outlined.p-button-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
 }
 
-.action-buttons .p-button.p-button-help {
-    border-color: #6366f1;
-    color: #6366f1;
+.students-page .action-buttons .p-button-outlined.p-button-help {
+    color: #007bff;
+    border-color: #007bff;
+    background-color: transparent;
 }
 
-.p-datatable .p-datatable-thead > tr > th {
+.students-page .action-buttons .p-button-outlined.p-button-help:hover {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.students-page .p-datatable {
+    width: 100%;
+}
+
+.students-page .p-datatable .p-datatable-thead > tr > th {
     background-color: #f8f9fa;
     color: #495057;
     font-weight: 600;
-    padding: 1rem;
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
 }
 
-.p-datatable .p-datatable-tbody > tr {
-    transition: background-color 0.3s ease;
+.students-page .p-datatable .p-datatable-tbody > tr {
+    transition: background-color 0.15s ease-in-out;
 }
 
-.p-datatable .p-datatable-tbody > tr:hover {
-    background-color: #f0f0f0;
+.students-page .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+    background-color: #f9f9f9;
 }
 
-.p-datatable .p-datatable-tbody > tr > td {
-    padding: 1rem;
+.students-page .p-datatable .p-datatable-tbody > tr:hover {
+    background-color: #e9ecef;
 }
 
-.p-paginator {
-    padding: 1rem;
-    background-color: #ffffff;
-    border-top: 1px solid #e0e0e0;
+.students-page .p-datatable .p-datatable-tbody > tr > td {
+    padding: 12px;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+.students-page .p-paginator {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
 }
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
     .students-page {
-        padding: 1rem;
+        padding: 15px;
     }
 
-    .table-header {
-        padding: 1rem;
-    }
-
-    .search-filter-container {
-        width: 40%;
+    .students-page .table-header {
         flex-direction: column;
         align-items: stretch;
-        padding: 0.5rem;
     }
 
-    .search-input-wrapper {
-        margin-right: 0;
-        margin-bottom: 1rem;
-        width: 40%;
+    .students-page .search-filter-container {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+    
+    .students-page .header-button {
+        height: 38px; /* Adjust this value to your desired height */
+        display: flex;
+        align-items: center; /* Vertically center the content */
     }
 
-    .action-buttons {
+    .students-page .search-input-wrapper {
+        margin-bottom: 10px;
+    }
+
+    .students-page .action-buttons {
         flex-direction: column;
     }
+}
 
-    .action-buttons .p-button {
-        width: 100%;
-    }
+.students-page .actions-search-container {
+    display: flex;
+    justify-content: space-between; /* Distributes space between action buttons and search/filter */
+    align-items: center; /* Vertically aligns items in the container */
+    width: 100%;
+    padding-top: 9px;
 }

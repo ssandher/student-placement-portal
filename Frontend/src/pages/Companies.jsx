@@ -301,26 +301,26 @@ const Companies = () => {
     const hideFilterDialog = () => setFilterDialog(false);
 
     const header = (
-        <div className="table-header flex-row justify-content-between flex-wrap">
-            <div className="flex flex-wrap">
-                <Button label="New" icon="pi pi-plus" className="p-button-success mr-2" outlined onClick={openNew} />
-                <Button label="Delete" icon="pi pi-trash" className="p-button-danger mr-2" outlined onClick={confirmDeleteSelected} disabled={!selectedCompanies || !selectedCompanies.length} />
-                <Button label="Export" icon="pi pi-upload" className="p-button-help mr-2" outlined onClick={exportCSV} />
+        <div className="table-header">
+            <div className="header-buttons">
+                <Button label="New" icon="pi pi-plus" className="p-button-success header-button" outlined onClick={openNew} />
+                <Button label="Delete" icon="pi pi-trash" className="p-button-danger header-button" outlined onClick={confirmDeleteSelected} disabled={!selectedCompanies || !selectedCompanies.length} />
+                <Button label="Export" icon="pi pi-upload" className="p-button-help header-button" outlined onClick={exportCSV} />
             </div>
-            <div className="flex align-items-center flex-wrap">
+            <div className="header-search-filter">
                 <span className="p-input-icon-left">
                     <IconField iconPosition="left">
                         <InputIcon className="pi pi-search"> </InputIcon>
                         <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." style={{ width: '500px' }} />
                     </IconField>
                 </span>
-                <Button label="Filter" icon="pi pi-filter" className="p-button-secondary ml-2" outlined onClick={openFilterDialog} style={{ alignItems: 'flex-end' }} />
+                <Button label="Filter" icon="pi pi-filter" className="p-button-secondary header-button" outlined onClick={openFilterDialog} style={{ alignItems: 'flex-end' }} />
             </div>
         </div>
     );
 
     const applyFilter = () => {
-        let filteredData = companyData.filter((comp) => {
+        let filteredData = companies.filter((comp) => {
             return (
                 (filter.min_no_of_student_placed === null || comp.no_of_student_placed >= filter.min_no_of_student_placed) &&
                 (filter.max_no_of_student_placed === null || comp.no_of_student_placed <= filter.max_no_of_student_placed)
@@ -365,7 +365,7 @@ const Companies = () => {
             <Toast ref={toast} />
             {/* <h2 className="ml-5" >Manage Companies</h2> */}
             <div className="card">
-            <h2 className="ml-5" >Manage Companies</h2>
+                <h2 className="manage-companies-header">Manage Companies</h2>
                 <DataTable
                     ref={dt}
                     value={companies}

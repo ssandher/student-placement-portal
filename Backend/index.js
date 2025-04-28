@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.post("/", AdminController.signup);
 app.post("/login", AdminController.login);
 app.use("/api", authmiddleware, routes);
+app.use("/", routes); // Added this line to include the forgot password routes without authentication
 app.listen(port, () =>  {
   console.log("Server listening on port " + port);
 });

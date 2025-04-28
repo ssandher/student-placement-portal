@@ -1,4 +1,3 @@
-// src/App.js
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'primereact/resources/themes/saga-blue/theme.css';
@@ -19,6 +18,9 @@ import Reports from './pages/Reports';
 import JobPosting from './pages/JobPosting';
 import Communication from './pages/Communication'; // Import Communication page
 import Results from './pages/Results'; // Import Results page
+import ForgotPassword from './pages/ForgotPassword';
+import VerifyOTP from './pages/VerifyOTP';
+import ResetPassword from './pages/ResetPassword';
 import './App.css';
 
 import axios from "axios";
@@ -118,6 +120,9 @@ function App() {
           ) : (
             <Routes>
               <Route path="/auth" element={<SignUp onLogin={handleLogin} />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/verify-otp" element={<VerifyOTP />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
               <Route path="*" element={<Navigate to="/auth" replace />} />
             </Routes>
           )}

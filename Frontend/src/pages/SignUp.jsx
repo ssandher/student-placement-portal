@@ -158,9 +158,9 @@
 // export default SignUp;
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './SignUp.module.css'; 
-import pdeuLogo from '../photos/Pdeu_logo.png'; 
+import { useNavigate, Link } from 'react-router-dom';
+import styles from './SignUp.module.css';
+import pdeuLogo from '../photos/Pdeu_logo.png';
 import pdeuBuild from '../photos/pdpu_build.jpg';
 import axios from 'axios';
 
@@ -173,7 +173,7 @@ const SignUp = ({ onLogin }) => {
     role: 'CDC Cell'
   });
   const [error, setError] = useState('');
-  
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -213,7 +213,7 @@ const SignUp = ({ onLogin }) => {
           <img src={pdeuLogo} alt="PDEU Logo" className={styles.pdeuLogo} />
         </div>
         <h2 className={styles.signupText}>{isSignUp ? 'SIGN-UP' : 'LOGIN'}</h2>
-        
+
         <form onSubmit={handleSubmit}>
           {isSignUp && (
             <div className={styles.formGroup}>
@@ -225,7 +225,9 @@ const SignUp = ({ onLogin }) => {
           </div>
           <div className={styles.formGroup}>
             <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Enter Password" required className={styles.inputField} />
-            <a href="#" className={styles.forgotPassword}>Forgot Password?</a>
+            {!isSignUp && (
+              <Link to="/forgot-password" className={styles.forgotPassword}>Forgot Password?</Link>
+            )}
           </div>
           {isSignUp && (
             <div className={styles.roleOptions}>
@@ -244,7 +246,7 @@ const SignUp = ({ onLogin }) => {
         </form>
 
         <p className={styles.toggleText}>
-          {isSignUp ? 'Already have an account?' : "Don't have an account?"} 
+          {isSignUp ? 'Already have an account?' : "Don't have an account?"}
           <button onClick={() => setIsSignUp(!isSignUp)} className={styles.toggleBtn}>
             {isSignUp ? 'Login' : 'Sign Up'}
           </button>
@@ -261,4 +263,3 @@ const SignUp = ({ onLogin }) => {
 };
 
 export default SignUp;
-

@@ -79,7 +79,7 @@ const JobPosting = () => {
             const response = await axios.get("http://localhost:3000/api/student/getAllStudents", {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            console.log("Student API Response:", response.data);
+            // console.log("Student API Response:", response.data);
             setStudents(response.data); // ✅ No enrichment here
         } catch (error) {
             console.error("Error fetching students:", error);
@@ -112,11 +112,11 @@ const JobPosting = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log("Department API Response:", response.data);
+            // console.log("Department API Response:", response.data);
             // Correct mapping: use dep.dep_name for label
             const departmentOptions = response.data.map(dep => ({ label: dep.dep_name, value: dep.dep_id }));
             setDepartmentOptions(departmentOptions);
-            console.log("Department Options:", departmentOptions);
+            // console.log("Department Options:", departmentOptions);
         } catch (error) {
             console.error("Error fetching departments:", error);
         }
@@ -130,11 +130,11 @@ const JobPosting = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log("School API Response:", response.data);
+            // console.log("School API Response:", response.data);
             // Correct mapping: use school.school_name for label
             const schoolOptions = response.data.map(school => ({ label: school.school_name, value: school.school_id }));
             setSchoolOptions(schoolOptions);
-            console.log("School Options:", schoolOptions);
+            // console.log("School Options:", schoolOptions);
         } catch (error) {
             console.error("Error fetching schools:", error);
         }
@@ -344,7 +344,7 @@ const JobPosting = () => {
 
 
     return (
-        <div className="job-posting-page">
+        <div className="job-posting-page card">
             <h2>Job Posting</h2>
             <div className="search-filter-container">
                 <div className="search-input-wrapper">
@@ -394,18 +394,19 @@ const JobPosting = () => {
                 onSelectionChange={(e) => setSelectedData(e.value)}
                 exportFilename="Eligible_Students"
                 loading={loading} // Enable loading indicator
+                className="custom-datatable"
             >
                 <Column selectionMode="multiple" exportable={false}></Column>
                 <Column field="name" header="Name" body={(rowData) => rowData.name || 'N/A'} sortable />
-                <Column field="rollNumber" header="Roll Number" sortable />
-                <Column field="year_of_study" header="Year of Study" sortable />
+                <Column field="rollNumber" header="Roll Number" sortable style={{ minWidth: '170px' }}/>
+                <Column field="year_of_study" header="Year of Study" sortable style={{ minWidth: '180px' }} />
                 <Column field="school_name" header="School" sortable />
                 <Column field="dep_name" header="Department" sortable />
                 <Column field="gender" header="Gender" sortable />
-                <Column field="tenth_percentage" header="10th %" body={(rowData) => `${rowData.tenth_percentage}%`} sortable />
-                <Column field="twelfth_percentage" header="12th %" body={(rowData) => `${rowData.twelfth_percentage}%`} sortable />
-                <Column field="cpi_after_7th_sem" header="CPI 7th Sem" body={(rowData) => rowData.cpi_after_7th_sem} sortable />
-                <Column field="no_of_active_backlog" header="Active Backlogs" sortable />
+                <Column field="tenth_percentage" header="10th %" body={(rowData) => `${rowData.tenth_percentage}%`} sortable style={{ minWidth: '120px' }}/>
+                <Column field="twelfth_percentage" header="12th %" body={(rowData) => `${rowData.twelfth_percentage}%`} sortable style={{ minWidth: '120px' }}/>
+                <Column field="cpi_after_7th_sem" header="CPI 7th Sem" body={(rowData) => rowData.cpi_after_7th_sem} sortable style={{ minWidth: '160px' }}/>
+                <Column field="no_of_active_backlog" header="Active Backlogs" sortable style={{ minWidth: '180px' }}/>
             </DataTable>
 
             <Dialog
@@ -413,6 +414,7 @@ const JobPosting = () => {
                 onHide={() => setIsDialogOpen(false)}
                 header="Create New Application"
                 style={{ width: '700px' }}
+                className="custom-dialog"
             >
                 <div className="grid">
                     <div className="field col-12 md:col-6">
@@ -457,7 +459,7 @@ const JobPosting = () => {
                             value={applicationForm.year_of_study}
                             onValueChange={(e) => setApplicationForm({ ...applicationForm, year_of_study: e.value })}
                             placeholder="Enter Year"
-                            className="w-full"
+                            className="w-full custom-input"
                             mode="decimal"
                             minFractionDigits={0}
                             maxFractionDigits={0}
@@ -510,7 +512,7 @@ const JobPosting = () => {
                             minFractionDigits={2}
                             maxFractionDigits={2}
                             suffix="%"
-                            className="w-full"
+                            className="w-full custom-input"
                         />
                     </div>
 
@@ -527,7 +529,7 @@ const JobPosting = () => {
                             minFractionDigits={2}
                             maxFractionDigits={2}
                             suffix="%"
-                            className="w-full"
+                            className="w-full custom-input"
                         />
                     </div>
 
@@ -543,7 +545,7 @@ const JobPosting = () => {
                             mode="decimal"
                             minFractionDigits={2}
                             maxFractionDigits={2}
-                            className="w-full"
+                            className="w-full custom-input"
                         />
                     </div>
 
@@ -559,13 +561,13 @@ const JobPosting = () => {
                             mode="decimal"
                             minFractionDigits={0}
                             maxFractionDigits={0}
-                            className="w-full"
+                            className="w-full custom-input"
                         />
                     </div>
                 </div>
-                <div className="flex flex-row flex-end" style={{ width: '100%', borderTop: 'solid 1px grey', alignContent: 'end', marginTop: '2rem' }}>
-                    <Button label="Cancel" icon="pi pi-times" onClick={() => resetFilters()} outlined className="p-button-danger" style={{ marginRight: '16rem' }} />
-                    <Button label="Create" outlined icon="pi pi-check" onClick={handleCreateApplication} autoFocus />
+                <div className="button-container flex flex-row flex-end" style={{ width: '100%', borderTop: 'solid 1px grey', alignContent: 'end', marginTop: '2rem' }}>
+                    <Button label="Cancel" icon="pi pi-times" onClick={() => resetFilters()} outlined className="p-button-danger custom-button" />
+                    <Button label="Create" outlined icon="pi pi-check" onClick={handleCreateApplication} className="custom-button" autoFocus />
                 </div>
             </Dialog>
 

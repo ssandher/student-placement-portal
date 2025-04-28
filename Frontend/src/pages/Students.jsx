@@ -671,29 +671,27 @@ const deleteSelectedStudents = async () => {
 
     const header = (
         <div className="table-header">
-            <h2>Manage Students</h2>
-            <div className="search-filter-container">
-                <div className="search-input-wrapper"style={{ width: '40%' }}>
-                    <InputText
-                        value={searchValue}
-                        onChange={(e) => {
-                            setSearchValue(e.target.value);
-                            setGlobalFilter(e.target.value);
-                        }}
-                        placeholder="Search students..."
-                        className="search-input"
-                    />
-                    <i className="search-icon pi pi-search"></i>
+            <div className="actions-search-container">
+                <div className="action-buttons">
+                    <Button label="Add New Student" icon="pi pi-plus" className="p-button-outlined p-button-success header-button" onClick={openNew} />
+                    <Button label="Delete Selected" icon="pi pi-trash" className="p-button-outlined p-button-danger header-button" onClick={confirmDeleteSelected} disabled={!selectedStudents.length} />
+                    <Button label="Export CSV" icon="pi pi-upload" className="p-button-outlined p-button-help header-button" onClick={exportCSV} />
                 </div>
-                <button className="filter-button" onClick={() => setFilterDialog(true)}>
-                    <i className="pi pi-filter"></i>
-                    <span>Filter</span>
-                </button>
-            </div>
-            <div className="action-buttons">
-                <Button label="Add New Student" icon="pi pi-plus" className="p-button-outlined p-button-success" onClick={openNew} />
-                <Button label="Delete Selected" icon="pi pi-trash" className="p-button-outlined p-button-danger" onClick={confirmDeleteSelected} disabled={!selectedStudents.length} />
-                <Button label="Export CSV" icon="pi pi-upload" className="p-button-outlined p-button-help" onClick={exportCSV} />
+                <div className="search-filter-container">
+                    <div className="search-input-wrapper">
+                        <InputText
+                            value={searchValue}
+                            onChange={(e) => {
+                                setSearchValue(e.target.value);
+                                setGlobalFilter(e.target.value);
+                            }}
+                            placeholder="Search students..."
+                            className="search-input"
+                        />
+                        <i className="search-icon pi pi-search"></i>
+                    </div>
+                    <Button label="Filter" icon="pi pi-filter" className="p-button-outlined p-button-secondary header-button" onClick={() => setFilterDialog(true)} />
+                </div>
             </div>
         </div>
     );
@@ -702,6 +700,7 @@ const deleteSelectedStudents = async () => {
         <div className="students-page">
             <Toast ref={toast} />
             <div className="card">
+            <h2 className="manage-students-header">Manage Students</h2>
                 {header}
                 <div className="table-container">
                     <DataTable

@@ -395,7 +395,8 @@ const PlacedStudentsTable = ({ companyId, companyName }) => {
     }
 
     return (
-        <div className="datatable-crud-demo m-4">
+        // datatable-crud-demo m-4
+        <div className="datatable-crud-demo"> 
             <Toast ref={toast} />
             <div className="card shadow-2 border-round">
                 <DataTable
