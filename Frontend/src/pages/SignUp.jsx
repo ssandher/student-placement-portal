@@ -167,7 +167,7 @@ import axios from 'axios';
 const SignUp = ({ onLogin }) => {
   const [isSignUp, setIsSignUp] = useState(true);
   const [formData, setFormData] = useState({
-    name: '',
+    admin_name: '',  // Added admin_name
     email: '',
     password: '',
     role: 'CDC Cell'
@@ -187,15 +187,18 @@ const SignUp = ({ onLogin }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = isSignUp ? 'http://localhost:3000/' : 'http://localhost:3000/login';
+      const url = isSignUp ? 'http://localhost:3000/signup' : 'http://localhost:3000/login'; //Explicitly use signup endpoint
+
       const response = await axios.post(url, formData);
 
       if (response.status === 200) {
         alert(isSignUp ? 'Registration successful!' : 'Login successful!');
         if (!isSignUp) {
           localStorage.setItem('token', response.data.token);
-          onLogin();
+          onLogin(response.data.userName); // Pass username on login
           navigate('/');
+        } else {
+          navigate('/auth'); //Navigate to signup after sign up
         }
       } else {
         throw new Error(response.data.message || 'Something went wrong');
@@ -217,7 +220,7 @@ const SignUp = ({ onLogin }) => {
         <form onSubmit={handleSubmit}>
           {isSignUp && (
             <div className={styles.formGroup}>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Enter Your Name" required className={styles.inputField} />
+              <input type="text" name="admin_name" value={formData.admin_name} onChange={handleChange} placeholder="Enter Your Name" required className={styles.inputField} />
             </div>
           )}
           <div className={styles.formGroup}>

@@ -164,7 +164,7 @@
 
 // export default PlacementReport;
 
-import React, { useState, useEffect, useRef } from "react"; // Added useRef if needed later
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -172,37 +172,31 @@ import { Chart } from "primereact/chart";
 import { Card } from "primereact/card";
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Message } from 'primereact/message';
-import { Container, Grid } from "@mui/material"; // Using MUI Grid
-import "./PlacementReport.css"; // Import custom CSS
+import { Container, Grid } from "@mui/material";
+import "./PlacementReport.css";
 
-// Default empty chart data structures
 const emptyPieData = { labels: [], datasets: [{ data: [], backgroundColor: [], hoverBackgroundColor: [] }] };
 const emptyBarData = { labels: [], datasets: [{ label: '', data: [], backgroundColor: '' }] };
 
 const PlacementReport = () => {
-    // Initialize with empty arrays
     const [allPlacements, setAllPlacements] = useState([]);
     const [coreNonCoreData, setCoreNonCoreData] = useState([]);
     const [yearWiseData, setYearWiseData] = useState([]);
     const [departmentWiseData, setDepartmentWiseData] = useState([]);
-
-    // Combined Loading/Error State
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Helper to get token
     const getToken = () => localStorage.getItem("token");
 
     useEffect(() => {
         setLoading(true);
-        setError(null); // Reset error on new fetch attempt
+        setError(null);
 
         const fetchData = async () => {
             try {
                 const token = getToken();
                 const headers = { Authorization: `Bearer ${token}` };
 
-                // Fetch all data concurrently
                 const [
                     placementsRes,
                     coreRes,
@@ -215,12 +209,6 @@ const PlacementReport = () => {
                     axios.get("http://localhost:3000/api/placement/getPlacedDepartmentWise", { headers })
                 ]);
 
-                // console.log('API - All Placements:', placementsRes.data);
-                // console.log('API - Core/Non-Core:', coreRes.data);
-                // console.log('API - Year-Wise:', yearRes.data);
-                // console.log('API - Department-Wise:', deptRes.data);
-
-                // Validate and set state
                 setAllPlacements(Array.isArray(placementsRes.data) ? placementsRes.data : []);
                 setCoreNonCoreData(Array.isArray(coreRes.data) ? coreRes.data : []);
                 setYearWiseData(Array.isArray(yearRes.data) ? yearRes.data : []);
@@ -230,7 +218,6 @@ const PlacementReport = () => {
                 console.error("Failed to fetch placement report data:", err);
                 const errorMsg = err.response?.data?.message || err.message || "Failed to load report data.";
                 setError(errorMsg);
-                // Set all data to empty arrays on error
                 setAllPlacements([]);
                 setCoreNonCoreData([]);
                 setYearWiseData([]);
@@ -241,9 +228,8 @@ const PlacementReport = () => {
         };
 
         fetchData();
-    }, []); // Runs once on mount
+    }, []);
 
-    // --- Chart Data Preparation (with safety) ---
     const getCoreNonCoreOptions = () => {
         if (!coreNonCoreData || !Array.isArray(coreNonCoreData) || coreNonCoreData.length === 0) {
             return emptyPieData;
@@ -253,7 +239,7 @@ const PlacementReport = () => {
                 labels: coreNonCoreData.map(data => data.core_non_core || 'Unknown'),
                 datasets: [{
                     data: coreNonCoreData.map(data => data.count || 0),
-                    backgroundColor: ["#42A5F5", "#66BB6A", "#FFA726"], // Add more colors if needed
+                    backgroundColor: ["#42A5F5", "#66BB6A", "#FFA726"],
                     hoverBackgroundColor: ["#64B5F6", "#81C784", "#FFB74D"],
                 }],
             };
@@ -280,17 +266,16 @@ const PlacementReport = () => {
     };
     const yearChartData = getYearWiseOptions();
 
-    const yearWiseChartOptions = { // Static chart appearance options
+    const yearWiseChartOptions = {
         maintainAspectRatio: false,
         responsive: true,
         plugins: { legend: { display: false } },
         scales: {
-            y: { beginAtZero: true, ticks: { precision: 0, stepSize: 1 } }, // Ensure integer ticks
+            y: { beginAtZero: true, ticks: { precision: 0, stepSize: 1 } },
             x: { grid: { display: false } }
         },
     };
 
-    // --- Render Logic ---
     if (loading) {
         return (
             <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
@@ -309,17 +294,15 @@ const PlacementReport = () => {
 
     return (
         <div className="placement-report-page">
-            <Container maxWidth="xl" sx={{ mt: 4, mb: 4, ml: 0, pl: 0, pr: 0 }}> {/* ml: 0 removes left margin, pl: 0 and pr: 0 remove padding */}
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4}}>
                 <Grid container spacing={3}>
-                    {/* Placement Details Table */}
                     <Grid item xs={12}>
                         <Card title=" Student Placement Details" className="shadow-2 border-round" style={{ width: '100%' }}>
                             <DataTable value={allPlacements} paginator rows={10} emptyMessage="No placement details found." responsiveLayout="scroll"
-                                className="p-datatable-sm" // Add this class for similar styling
+                                className="p-datatable-sm"
                                 scrollable
-                                scrollHeight="400px" // Adjusted to match Reports.jsx
+                                scrollHeight="400px"
                                 stripedRows>
-                                {/* Use field names confirmed from backend getAllDetails */}
                                 <Column field="student_name" header="Student Name" sortable filter filterPlaceholder="Search" />
                                 <Column field="company_name" header="Company Name" sortable filter filterPlaceholder="Search" />
                                 <Column field="position" header="Position" sortable />
@@ -331,9 +314,7 @@ const PlacementReport = () => {
                         </Card>
                     </Grid>
 
-                    {/* Core vs Non-Core Chart */}
                     <Grid item xs={12} md={6} lg={6}>
-                        {/* Adjust grid sizing */}
                         <Card title="Core vs Non-Core" className="shadow-2 border-round" style={{ height: '450px', width: '100%' }}>
                             {coreNonCoreData.length > 0 ? (
                                 <div style={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
@@ -347,9 +328,7 @@ const PlacementReport = () => {
                         </Card>
                     </Grid>
 
-                    {/* Year-Wise Placement Bar Chart */}
                     <Grid item xs={12} md={6} lg={6}>
-                        {/* Adjust grid sizing */}
                         <Card title="Placements by Year" className="shadow-2 border-round" style={{ height: '450px', width: '100%' }}>
                             {yearWiseData.length > 0 ? (
                                 <div style={{ height: '100%', padding: '1rem' }}>
@@ -363,9 +342,7 @@ const PlacementReport = () => {
                         </Card>
                     </Grid>
 
-                    {/* Department-Wise Placement Data */}
                     <Grid item xs={12} lg={12}>
-                        {/* Adjust grid sizing */}
                         <Card title="Placements by Department" className="shadow-2 border-round" style={{ height: '450px', width: '100%' }}>
                             {departmentWiseData.length > 0 ? (
                                 <DataTable value={departmentWiseData} scrollable scrollHeight="380px" emptyMessage="No department data found."

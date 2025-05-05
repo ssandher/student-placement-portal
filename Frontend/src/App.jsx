@@ -28,6 +28,7 @@ import axios from "axios";
 function App() {
   const [open, setOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userName, setUserName] = useState(''); // Add userName state
 
   const verifyToken = async (token) => {
     try {
@@ -42,10 +43,14 @@ function App() {
       );
 
       // Directly access data
-      return response.data.isValid; // Assuming the API response has an `isValid` field
+      if (response.data.isValid) {
+          return response.data.userName; // Only return userName if token is valid
+      } else {
+          return null; // Or handle invalid token appropriately
+      }
     } catch (error) {
       console.error('Token verification error:', error);
-      return false; // If there's an error, consider the token invalid
+      return null; // If there's an error, consider the token invalid
     }
 
   };
@@ -55,12 +60,14 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       // Verify the token
-      verifyToken(token).then(isValid => {
-        if (isValid) {
+      verifyToken(token).then(userName => {
+        if (userName) {
           setIsAuthenticated(true);
+          setUserName(userName);  // Set the userName from the API
         } else {
           localStorage.removeItem('token'); // Clear the invalid token
           setIsAuthenticated(false);
+          setUserName('');
         }
       });
     }
@@ -70,13 +77,15 @@ function App() {
     setOpen(!open);
   };
 
-  const handleLogin = () => {
+  const handleLogin = (userName) => {
     setIsAuthenticated(true);
+    setUserName(userName);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token'); // Clear the token on logout
     setIsAuthenticated(false);
+    setUserName(''); // Clear the userName
   };
 
   // Protected route component
@@ -93,7 +102,7 @@ function App() {
         {isAuthenticated && (
           <>
             <div className='header-container'>
-              <Header handleDrawerToggle={handleDrawerToggle} onLogout={handleLogout} />
+              <Header handleDrawerToggle={handleDrawerToggle} onLogout={handleLogout} userName={userName} isLoggedIn={isAuthenticated} /> {/* Pass userName prop */}
             </div>
             <div className='sidebar-container'>
               <Sidebar open={open} />

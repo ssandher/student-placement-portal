@@ -10,10 +10,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post("/", AdminController.signup);
-app.post("/login", AdminController.login);
+app.post("/signup", AdminController.signup);  // signup
+app.post("/login", AdminController.login);    // login
+
 app.use("/api", authmiddleware, routes);
-app.use("/", routes); // Added this line to include the forgot password routes without authentication
+app.post("/verify-token", AdminController.verifyToken) //verify token function
+app.use("/", routes);
 app.listen(port, () =>  {
   console.log("Server listening on port " + port);
 });

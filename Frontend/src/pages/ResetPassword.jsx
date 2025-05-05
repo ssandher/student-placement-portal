@@ -7,16 +7,24 @@ import axios from 'axios';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      setMessage('');
+      return;
+    }
+
     const email = localStorage.getItem('resetEmail'); // Or retrieve it from where you stored it
     console.log("Email retrieved from localStorage:", email); // Add this line
     if (!email) {
       setError('Email not found. Please start the forgot password process again.');
+      setMessage('');
       return;
     }
 
@@ -52,7 +60,18 @@ const ResetPassword = () => {
               className={styles.inputField}
             />
           </div>
-          <button type="submit" className={styles.submitBtn}>Reset Password</button>
+          <div className={styles.formGroup}>
+            <input
+              type="password"
+              name="confirmPassword"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm New Password"
+              required
+              className={styles.inputField}
+            />
+          </div>
+          <button type="submit" className={styles.submitBtn} disabled={password !== confirmPassword}>Reset Password</button>
           {error && <p className={styles.error}>{error}</p>}
           {message && <p className={styles.message}>{message}</p>}
         </form>

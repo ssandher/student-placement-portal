@@ -1,6 +1,4 @@
 import express from "express";
-const app = express();
-
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Admin from "../models/Admin.js";
@@ -9,7 +7,7 @@ import { generateOTP } from '../utils/otpGenerator.js';
 const AdminController = {
   signup: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { admin_name, email, password } = req.body; // Include admin_name
 
       const existingEmail = await Admin.getAdmin(email);
       if (existingEmail) {
@@ -19,14 +17,15 @@ const AdminController = {
       }
 
       await Admin.insert({
+        admin_name: admin_name,  // Pass admin_name
         email: email,
         password: password,
       });
       res.status(201).json({
         message: "User registered successfully",
-
         user: {
           email: email,
+          admin_name: admin_name
         },
       });
     } catch (error) {
@@ -43,10 +42,11 @@ const AdminController = {
       if (!user || !(await bcrypt.compare(password, user.password))) {
         return res.status(400).json({ message: "Invalid email or password" });
       }
-      const token = jwt.sign({ id: user.id }, process.env.secret_key, {
+      const token = jwt.sign({ id: user.admin_id }, process.env.secret_key, { // changed to admin_id
         expiresIn: "1h",
       });
-      res.status(200).json({ message: "Login successful", token });
+      // Send the username back in the response
+      res.status(200).json({ message: "Login successful", token: token, userName: user.admin_name });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -137,6 +137,34 @@ const AdminController = {
 
     } catch (error) {
       res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+  },
+  verifyToken: async (req, res) => {
+    try {
+      const token = req.headers.authorization?.split(' ')[1]; // Get token from header
+
+      if (!token) {
+        return res.status(401).json({ isValid: false, message: 'No token provided' });
+      }
+
+      jwt.verify(token, process.env.secret_key, async (err, decoded) => {
+        if (err) {
+          return res.status(401).json({ isValid: false, message: 'Invalid token' });
+        }
+
+        // Token is valid, now fetch the admin to get the name
+        const admin = await Admin.getAdminByAdminId(decoded.id); // Assuming you have a getAdminByAdminId function
+
+        if (!admin) {
+          return res.status(404).json({ isValid: false, message: 'Admin not found' });
+        }
+
+        // Send back the admin name and isValid = true
+        return res.status(200).json({ isValid: true, userName: admin.admin_name });
+      });
+    } catch (error) {
+      console.error("Error verifying token:", error);
+      return res.status(500).json({ isValid: false, message: 'Internal server error' });
     }
   }
 };
